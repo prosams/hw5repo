@@ -11,8 +11,11 @@ import nltk # uncomment line after you install nltk
 ## Any names of people you worked with on this assignment:
 
 #usage should be python3 hw5_twitter.py <username> <num_tweets>
-# username = sys.argv[1]
-# num_tweets = sys.argv[2]
+try:
+	username = sys.argv[1]
+	num_tweets = sys.argv[2]
+except:
+	userInput1 = input("Input the twitter username and the number of tweets you want to search")
 
 consumer_key = secret_data.CONSUMER_KEY
 consumer_secret = secret_data.CONSUMER_SECRET
@@ -27,36 +30,31 @@ requests.get(url, auth=auth)
 
 #Write your code below:
 #Code for Part 3:Caching
-
-CACHE_FNAME = 'cache.json'
-
-try:
-    cache_file = open(CACHE_FNAME, 'r')
-    cache_contents = cache_file.read()
-    cache_file.close()
-    CACHE_DICTION = json.loads(cache_contents)
-except:
-    CACHE_DICTION = {}
-
-def getWithCaching(baseURL, params={}):
-  req = requests.Request(method = 'GET', url =baseURL, params = sorted(params.items()))
-  prepped = req.prepare()
-  fullURL = prepped.url
-
-  # if we haven't seen this URL before
-  if fullURL not in CACHE_DICTION:
-      # make the request and store the response
-      response = requests.Session().send(prepped)
-      CACHE_DICTION[fullURL] = response.text
-
-      # write the updated cache file
-      cache_file = open(CACHE_FNAME, 'w')
-      cache_file.write(json.dumps(CACHE_DICTION))
-      cache_file.close()
-
-  # if fullURL WAS in the cache, CACHE_DICTION[fullURL] already had a value
-  # if fullRUL was NOT in the cache, we just set it in the if block above, so it's there now
-  return CACHE_DICTION[fullURL]
+#
+# CACHE_FNAME = 'cache.json'
+#
+# try:
+# 		cache_file = open(CACHE_FNAME, 'r')
+# 		cache_contents = cache_file.read()
+# 		cache_file.close()
+# 		CACHE_DICTION = json.loads(cache_contents)
+# except:
+# 		CACHE_DICTION = {}
+#
+# def getWithCaching(baseURL, params={}):
+# 	req = requests.Request(method = 'GET', url =baseURL, params = sorted(params.items()))
+# 	prepped = req.prepare()
+# 	fullURL = prepped.url
+#
+# 	if fullURL not in CACHE_DICTION:
+# 			response = requests.Session().send(prepped)
+# 			CACHE_DICTION[fullURL] = response.text
+#
+# 			cache_file = open(CACHE_FNAME, 'w')
+# 			cache_file.write(json.dumps(CACHE_DICTION))
+# 			cache_file.close()
+#
+# 	return CACHE_DICTION[fullURL]
 
 #Finish parts 1 and 2 and then come back to this
 
@@ -75,9 +73,9 @@ print(python_obj)
 #Code for Part 2:Analyze Tweets
 
 if __name__ == "__main__":
-    if not consumer_key or not consumer_secret:
-        print("You need to fill in client_key and client_secret in the secret_data.py file.")
-        exit()
-    if not access_token or not access_secret:
-        print("You need to fill in this API's specific OAuth URLs in this file.")
-        exit()
+		if not consumer_key or not consumer_secret:
+				print("You need to fill in client_key and client_secret in the secret_data.py file.")
+				exit()
+		if not access_token or not access_secret:
+				print("You need to fill in this API's specific OAuth URLs in this file.")
+				exit()
