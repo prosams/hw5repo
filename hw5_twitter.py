@@ -28,7 +28,6 @@ requests.get(url, auth=auth)
 #Write your code below:
 #Code for Part 3:Caching
 
-
 CACHE_FNAME = 'cache.json'
 
 try:
@@ -61,7 +60,13 @@ def getWithCaching(baseURL, params={}):
 
 #Finish parts 1 and 2 and then come back to this
 
-#Code for Part 1:Get Tweets
+#Code for Part 1: Get Tweets — the program takes two arguments: a twitter username and the number of tweets to analyze.
+print('USER:', username)
+print('TWEETS ANALYZED:', num_tweets)
+
+base_url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
+# compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
+params = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
 
 #Code for Part 2:Analyze Tweets
 
