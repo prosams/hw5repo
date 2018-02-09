@@ -3,11 +3,11 @@ import json
 import sys
 import requests
 import secret_data # file that contains OAuth credentials
-# import nltk # uncomment line after you install nltk
+import nltk # uncomment line after you install nltk
 
 ## SI 206 - HW
-## COMMENT WITH:
-## Your section day/time:
+## COMMENT WITH: Samantha Lu
+## Your section day/time: Tuesday 2-3:30
 ## Any names of people you worked with on this assignment:
 
 #usage should be python3 hw5_twitter.py <username> <num_tweets>
@@ -27,6 +27,38 @@ requests.get(url, auth=auth)
 
 #Write your code below:
 #Code for Part 3:Caching
+
+
+CACHE_FNAME = 'cache.json'
+
+try:
+    cache_file = open(CACHE_FNAME, 'r')
+    cache_contents = cache_file.read()
+    cache_file.close()
+    CACHE_DICTION = json.loads(cache_contents)
+except:
+    CACHE_DICTION = {}
+
+def getWithCaching(baseURL, params={}):
+  req = requests.Request(method = 'GET', url =baseURL, params = sorted(params.items()))
+  prepped = req.prepare()
+  fullURL = prepped.url
+
+  # if we haven't seen this URL before
+  if fullURL not in CACHE_DICTION:
+      # make the request and store the response
+      response = requests.Session().send(prepped)
+      CACHE_DICTION[fullURL] = response.text
+
+      # write the updated cache file
+      cache_file = open(CACHE_FNAME, 'w')
+      cache_file.write(json.dumps(CACHE_DICTION))
+      cache_file.close()
+
+  # if fullURL WAS in the cache, CACHE_DICTION[fullURL] already had a value
+  # if fullRUL was NOT in the cache, we just set it in the if block above, so it's there now
+  return CACHE_DICTION[fullURL]
+
 #Finish parts 1 and 2 and then come back to this
 
 #Code for Part 1:Get Tweets
