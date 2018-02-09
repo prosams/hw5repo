@@ -11,8 +11,8 @@ import nltk # uncomment line after you install nltk
 ## Any names of people you worked with on this assignment:
 
 #usage should be python3 hw5_twitter.py <username> <num_tweets>
-username = sys.argv[1]
-num_tweets = sys.argv[2]
+# username = sys.argv[1]
+# num_tweets = sys.argv[2]
 
 consumer_key = secret_data.CONSUMER_KEY
 consumer_secret = secret_data.CONSUMER_SECRET
@@ -61,16 +61,18 @@ def getWithCaching(baseURL, params={}):
 #Finish parts 1 and 2 and then come back to this
 
 #Code for Part 1: Get Tweets — the program takes two arguments: a twitter username and the number of tweets to analyze.
-print('USER:', username)
-print('TWEETS ANALYZED:', num_tweets)
+# print('USER:', username)
+# print('TWEETS ANALYZED:', num_tweets)
 
-base_url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
+# baseURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
 # compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
-params = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
+# p = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
+
+first25 = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json', params = {'screen_name':"umsi", 'count':25})
+python_obj = json.loads(first25.text)
+print(python_obj)
 
 #Code for Part 2:Analyze Tweets
-
-
 
 if __name__ == "__main__":
     if not consumer_key or not consumer_secret:
