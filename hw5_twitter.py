@@ -12,6 +12,7 @@ from nltk.corpus import stopwords
 ## Any names of people you worked with on this assignment:
 
 #usage should be python3 hw5_twitter.py <username> <num_tweets>
+# **************************************************
 try:
 	username = sys.argv[1]
 	num_tweets = sys.argv[2]
@@ -28,38 +29,36 @@ access_secret = secret_data.ACCESS_SECRET
 url = 'https://api.twitter.com/1.1/account/verify_credentials.json'
 auth = OAuth1(consumer_key, consumer_secret, access_token, access_secret)
 requests.get(url, auth=auth)
-#Code for OAuth ends
+# ******************************************************
+#Code for Part 3: Caching
 
-#Write your code below:
-#Code for Part 3:Caching
-#
-# CACHE_FNAME = 'cache.json'
-#
-# try:
-# 		cache_file = open(CACHE_FNAME, 'r')
-# 		cache_contents = cache_file.read()
-# 		cache_file.close()
-# 		CACHE_DICTION = json.loads(cache_contents)
-# except:
-# 		CACHE_DICTION = {}
-#
-# def getWithCaching(baseURL, params={}):
-# 	req = requests.Request(method = 'GET', url =baseURL, params = sorted(params.items()))
-# 	prepped = req.prepare()
-# 	fullURL = prepped.url
-#
-# 	if fullURL not in CACHE_DICTION:
-# 			response = requests.Session().send(prepped)
-# 			CACHE_DICTION[fullURL] = response.text
-#
-# 			cache_file = open(CACHE_FNAME, 'w')
-# 			cache_file.write(json.dumps(CACHE_DICTION))
-# 			cache_file.close()
-#
-# 	return CACHE_DICTION[fullURL]
+CACHE_FNAME = 'cache.json'
 
-#Finish parts 1 and 2 and then come back to this
+try:
+		cache_file = open(CACHE_FNAME, 'r')
+		cache_contents = cache_file.read()
+		cache_file.close()
+		CACHE_DICTION = json.loads(cache_contents)
+except:
+		CACHE_DICTION = {}
 
+def getWithCaching(baseURL, params={}):
+	req = requests.Request(method = 'GET', url =baseURL, params = sorted(params.items()))
+	prepped = req.prepare()
+	fullURL = prepped.url
+
+	if fullURL not in CACHE_DICTION:
+			response = requests.Session().send(prepped)
+			CACHE_DICTION[fullURL] = response.text
+
+			cache_file = open(CACHE_FNAME, 'w')
+			cache_file.write(json.dumps(CACHE_DICTION))
+			cache_file.close()
+
+	return CACHE_DICTION[fullURL]
+
+
+# ************************* PART ONE CODE ****************************************
 #Code for Part 1: Get Tweets — the program takes two arguments: a twitter username and the number of tweets to analyze.
 print('USER:', username)
 print('TWEETS ANALYZED:', num_tweets)
@@ -76,7 +75,7 @@ convertedRequest = json.loads(firstRequest.text)
 # convertedFile.close()
 #------------- --------------------------
 
-#****************************   Code for Part 2:Analyze Tweets  ********************************
+#****************************  Code for Part 2:Analyze Tweets  ********************************
 twitterString = ""
 
 for x in convertedRequest:
@@ -93,7 +92,7 @@ freqDist = nltk.FreqDist(token for token in tokens if token.isalpha()
 							and "http" not in token
 							and "https" not in token
 							and "RT" not in token
-							and stop_words not in token
+							and token not in stop_words
 							)
 
 print(freqDist)
