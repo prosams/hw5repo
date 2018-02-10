@@ -4,8 +4,7 @@ import sys
 import requests
 import secret_data # file that contains OAuth credentials
 import nltk # uncomment line after you install nltk
-nltk.download('gutenberg')
-from nltk.book import FreqDist
+from nltk.corpus import stopwords
 
 ## SI 206 - HW
 ## COMMENT WITH: Samantha Lu
@@ -83,8 +82,25 @@ twitterString = ""
 for x in convertedRequest:
 	twitterString += (x["text"] + " ")
 
+#Ignore stop words
+#(1) ignore any words that do not start with an alphabetic character [a-zA-Z],
+#(2) ignore 'http', 'https', and 'RT' (these show up a lot in Twitter)
+
 tokens = nltk.word_tokenize(twitterString)
-fdist1 = FreqDist(tokens)
+stop_words = set(stopwords.words('english'))
+freqDist = nltk.FreqDist(token for token in tokens if token.isalpha()
+							and "www." not in token
+							and "http" not in token
+							and "https" not in token
+							and "RT" not in token
+							and stop_words not in token
+							)
+
+print(freqDist)
+
+for word, frequency in freqDist.most_common(5):
+    print(word + " " + str(frequency))
+
 
 if __name__ == "__main__":
 		if not consumer_key or not consumer_secret:
