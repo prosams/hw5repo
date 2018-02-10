@@ -63,11 +63,15 @@ requests.get(url, auth=auth)
 print('USER:', username)
 print('TWEETS ANALYZED:', num_tweets)
 
-baseURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json' # compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
+baseURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json'# compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
 p = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
 firstRequest = requests.get(baseURL, p, auth = auth)
-convertedRequest = json.loads(firstRequest.text)
-print(convertedRequest)
+# convertedRequest = json.loads(firstRequest.text)
+# print(convertedRequest)
+
+data = json.dumps(firstRequest.text)
+with open("tweet.json","w") as f:
+  f.write(data)
 
 # first25 = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json', params = {'screen_name':"umsi", 'count':25})
 # python_obj = json.loads(first25.text)
