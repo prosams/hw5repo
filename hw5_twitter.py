@@ -4,6 +4,8 @@ import sys
 import requests
 import secret_data # file that contains OAuth credentials
 import nltk # uncomment line after you install nltk
+nltk.download('gutenberg')
+from nltk.book import FreqDist
 
 ## SI 206 - HW
 ## COMMENT WITH: Samantha Lu
@@ -68,16 +70,21 @@ p = {'screen_name':username, 'count':num_tweets} #screen_name is the actual user
 firstRequest = requests.get(baseURL, p, auth = auth)
 convertedRequest = json.loads(firstRequest.text)
 # print(convertedRequest)
-convertedFile = open('tweet.json', 'w')
-convertedFile.write(json.dumps(convertedRequest, indent = 5))
-convertedFile.close()
 
+# -- ------------------------- THIS SECTION OF CODE WRITES TO THE TWEET.JSON FILE!!!!
+# convertedFile = open('tweet.json', 'w')
+# convertedFile.write(json.dumps(convertedRequest, indent = 5))
+# convertedFile.close()
+#------------- --------------------------
 
-# first25 = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json', params = {'screen_name':"umsi", 'count':25})
-# python_obj = json.loads(first25.text)
-# print(python_obj)
+#****************************   Code for Part 2:Analyze Tweets  ********************************
+twitterString = ""
 
-#Code for Part 2:Analyze Tweets
+for x in convertedRequest:
+	twitterString += (x["text"] + " ")
+
+tokens = nltk.word_tokenize(twitterString)
+fdist1 = FreqDist(tokens)
 
 if __name__ == "__main__":
 		if not consumer_key or not consumer_secret:
