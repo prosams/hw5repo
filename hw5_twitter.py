@@ -53,7 +53,7 @@ def getWithCaching(baseURL, params):
 		CACHE_DICTION[specificUrl] = json.loads(jsonFile)
 
 		cache_file = open(CACHE_FNAME, 'w')
-		cache_file.write(json.dumps(CACHE_DICTION))
+		cache_file.write(json.dumps(CACHE_DICTION, indent = 5))
 		cache_file.close()
 
 	print("Getting your data from the cache....")
@@ -68,7 +68,6 @@ twitterURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json'# compare 
 p = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
 
 convertedRequest = getWithCaching(twitterURL, p)
-print(convertedRequest)
 # print(convertedRequest)
 
 # -- ------------------------- THIS SECTION OF CODE WRITES TO THE TWEET.JSON FILE!!!!
@@ -81,8 +80,6 @@ print(convertedRequest)
 twitterString = ""
 
 for x in convertedRequest:
-	print(x)
-	print(x["text"])
 	twitterString += (x["text"] + " ")
 
 #Ignore stop words
