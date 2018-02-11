@@ -55,8 +55,8 @@ def getWithCaching(baseURL, params):
 		cache_file = open(CACHE_FNAME, 'w')
 		cache_file.write(json.dumps(CACHE_DICTION, indent = 5))
 		cache_file.close()
-
-	print("Getting your data from the cache....")
+	else:
+		print("Getting your data from the cache....")
 	return CACHE_DICTION[specificUrl]
 
 # ************************* PART ONE CODE ****************************************
