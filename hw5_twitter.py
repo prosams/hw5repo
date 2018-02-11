@@ -32,7 +32,7 @@ requests.get(url, auth=auth)
 # ******************************************************
 #Code for Part 3: Caching
 
-CACHE_FNAME = 'cache.json'
+CACHE_FNAME = "twitter_cache.json"
 
 try:
 		cache_file = open(CACHE_FNAME, 'r')
@@ -42,21 +42,21 @@ try:
 except:
 		CACHE_DICTION = {}
 
-def getWithCaching(baseURL, params={}):
-	req = requests.Request(method = 'GET', url =baseURL, params = sorted(params.items()))
-	prepped = req.prepare()
-	fullURL = prepped.url
+def getWithCaching(baseURL, params):
+	specificUrl = baseURL + "?" + "screen_name" + "=" + username + "&" + "count" + "=" + num_tweets
 
-	if fullURL not in CACHE_DICTION:
-			response = requests.Session().send(prepped)
-			CACHE_DICTION[fullURL] = response.text
+	if specificUrl not in CACHE_DICTION:
+		print("Getting new data...")
+		response = requests.get(specificUrl, auth = auth)
+		jsonFile = response.text
+		CACHE_DICTION[specificUrl] = json.loads(jsonFile)
 
-			cache_file = open(CACHE_FNAME, 'w')
-			cache_file.write(json.dumps(CACHE_DICTION))
-			cache_file.close()
+		cache_file = open(CACHE_FNAME, 'w')
+		cache_file.write(json.dumps(CACHE_DICTION))
+		cache_file.close()
 
-	return CACHE_DICTION[fullURL]
-
+	print("Getting your data from the cache....")
+	return CACHE_DICTION[specificUrl]
 
 # ************************* PART ONE CODE ****************************************
 #Code for Part 1: Get Tweets — the program takes two arguments: a twitter username and the number of tweets to analyze.
@@ -65,7 +65,7 @@ print('TWEETS ANALYZED:', num_tweets)
 
 baseURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json'# compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
 p = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
-firstRequest = requests.get(baseURL, p, auth = auth)
+firstRequest = getWithCaching(baseURL, p)
 convertedRequest = json.loads(firstRequest.text)
 # print(convertedRequest)
 

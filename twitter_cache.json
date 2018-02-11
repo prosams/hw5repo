@@ -1,0 +1,1 @@
+{"https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=umsi&count=25": "{\"errors\":[{\"code\":215,\"message\":\"Bad Authentication data.\"}]}", "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=umsi&count=2": "{\"errors\":[{\"code\":215,\"message\":\"Bad Authentication data.\"}]}"}
