@@ -13,6 +13,7 @@ from nltk.corpus import stopwords
 
 #usage should be python3 hw5_twitter.py <username> <num_tweets>
 # **************************************************
+
 try:
 	username = sys.argv[1]
 	num_tweets = sys.argv[2]
@@ -63,10 +64,11 @@ def getWithCaching(baseURL, params):
 print('USER:', username)
 print('TWEETS ANALYZED:', num_tweets)
 
-baseURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json'# compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
+twitterURL = 'https://api.twitter.com/1.1/statuses/user_timeline.json'# compare to twitter example https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=twitterapi&count=2
 p = {'screen_name':username, 'count':num_tweets} #screen_name is the actual username displayed, count specifies number of tweets to retrieve
-firstRequest = getWithCaching(baseURL, p)
-convertedRequest = json.loads(firstRequest.text)
+
+convertedRequest = getWithCaching(twitterURL, p)
+print(convertedRequest)
 # print(convertedRequest)
 
 # -- ------------------------- THIS SECTION OF CODE WRITES TO THE TWEET.JSON FILE!!!!
@@ -79,6 +81,8 @@ convertedRequest = json.loads(firstRequest.text)
 twitterString = ""
 
 for x in convertedRequest:
+	print(x)
+	print(x["text"])
 	twitterString += (x["text"] + " ")
 
 #Ignore stop words
@@ -95,11 +99,8 @@ freqDist = nltk.FreqDist(token for token in tokens if token.isalpha()
 							and token not in stop_words
 							)
 
-print(freqDist)
-
 for word, frequency in freqDist.most_common(5):
     print(word + " " + str(frequency))
-
 
 if __name__ == "__main__":
 		if not consumer_key or not consumer_secret:
